@@ -143,9 +143,11 @@ spec:
         - name: db
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
-          args:
-            - shell
-            - -ecx
+          command: 
+            - bash
+            - -c
+            # - shell
+            # - -ecx
             # The use of qualified `hostname -f` is crucial:
             # Other nodes aren't able to look up the unqualified hostname.
             #
@@ -163,7 +165,7 @@ spec:
             # See details explained here:
             # https://github.com/helm/charts/pull/18993#issuecomment-558795102
             - >-
-              exec /cockroach/cockroach
+              /cockroach/cockroach
             {{- if index .Values.conf `single-node` }}
               start-single-node
             {{- else }}
